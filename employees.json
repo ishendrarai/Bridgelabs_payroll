@@ -1,20 +1,8 @@
 [
   {
-    "id": 1704067200000,
-    "name": "Sarah Johnson",
-    "department": "Engineering",
-    "basicSalary": 75000
-  },
-  {
-    "id": 1704153600000,
-    "name": "Michael Chen",
-    "department": "Marketing",
-    "basicSalary": 62000
-  },
-  {
-    "id": 1704240000000,
-    "name": "Emily Rodriguez",
-    "department": "Human Resources",
-    "basicSalary": 58000
+    "id": 1771235694652,
+    "name": "Ishendra Rai",
+    "department": "Customer Service",
+    "basicSalary": 12000
   }
 ]
