@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Employee</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>➕ Add New Employee</h1>
+      <p>Enter employee details to add them to the payroll system</p>
+    </header>
+
+    <nav>
+      <a href="/" class="home">🏠 Back to Dashboard</a>
+    </nav>
+
+    <main>
+      <div class="form-container">
+        <form action="/add" method="POST" onsubmit="return validateForm()">
+          <div class="form-group">
+            <label for="name">Employee Name *</label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              placeholder="Enter full name" 
+              required
+              minlength="2"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="department">Department *</label>
+            <select id="department" name="department" required>
+              <option value="">-- Select Department --</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Sales">Sales</option>
+              <option value="Human Resources">Human Resources</option>
+              <option value="Finance">Finance</option>
+              <option value="Operations">Operations</option>
+              <option value="Customer Service">Customer Service</option>
+              <option value="IT">Information Technology</option>
+              <option value="Legal">Legal</option>
+              <option value="Administration">Administration</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="basicSalary">Basic Salary (Monthly) *</label>
+            <input 
+              type="number" 
+              id="basicSalary" 
+              name="basicSalary" 
+              placeholder="Enter monthly salary" 
+              required
+              min="1"
+              step="0.01"
+            >
+            <small style="color: #7f8c8d; font-size: 0.875rem; margin-top: 0.5rem; display: block;">
+              💡 Tax (12%) and net salary will be calculated automatically
+            </small>
+          </div>
+
+          <button type="submit" class="btn-submit">Add Employee</button>
+        </form>
+      </div>
+
+      <div style="max-width: 600px; margin: 2rem auto; padding: 1.5rem; background: #e8f4fd; border-radius: 8px; border-left: 4px solid #3498db;">
+        <h4 style="margin-bottom: 0.75rem; color: #2c3e50;">📝 Salary Calculation Info</h4>
+        <ul style="color: #7f8c8d; margin-left: 1.5rem;">
+          <li>Tax is calculated at 12% of the basic salary</li>
+          <li>Net Salary = Basic Salary - Tax</li>
+          <li>All amounts will be displayed in the dashboard</li>
+        </ul>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 Employee Payroll System | Built with Node.js, Express & EJS</p>
+    </footer>
+  </div>
+
+  <script>
+    function validateForm() {
+      const name = document.getElementById('name').value.trim();
+      const department = document.getElementById('department').value;
+      const salary = parseFloat(document.getElementById('basicSalary').value);
+
+      if (name === '') {
+        alert('Please enter employee name');
+        return false;
+      }
+
+      if (department === '') {
+        alert('Please select a department');
+        return false;
+      }
+
+      if (isNaN(salary) || salary <= 0) {
+        alert('Please enter a valid salary greater than 0');
+        return false;
+      }
+
+      return true;
+    }
+
+    // Show salary preview
+    document.getElementById('basicSalary').addEventListener('input', function(e) {
+      const salary = parseFloat(e.target.value);
+      if (!isNaN(salary) && salary > 0) {
+        const tax = salary * 0.12;
+        const netSalary = salary - tax;
+        
+        let preview = document.getElementById('salary-preview');
+        if (!preview) {
+          preview = document.createElement('div');
+          preview.id = 'salary-preview';
+          preview.style.cssText = 'margin-top: 1rem; padding: 1rem; background: #d5f4e6; border-radius: 6px; font-size: 0.9rem;';
+          e.target.parentElement.appendChild(preview);
+        }
+        
+        preview.innerHTML = `
+          <strong style="color: #27ae60;">💰 Salary Breakdown:</strong><br>
+          <span style="color: #2c3e50;">Basic Salary: $${salary.toLocaleString('en-US', {minimumFractionDigits: 2})}</span><br>
+          <span style="color: #f39c12;">Tax (12%): $${tax.toLocaleString('en-US', {minimumFractionDigits: 2})}</span><br>
+          <span style="color: #27ae60; font-weight: 600;">Net Salary: $${netSalary.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>

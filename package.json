@@ -1,0 +1,20 @@
+{
+  "name": "employee-payroll-system",
+  "version": "1.0.0",
+  "description": "Server-side web application to manage employee records and calculate monthly payroll",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": ["payroll", "employee", "management", "express", "ejs"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ejs": "^3.1.9"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
