@@ -1,93 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Employee Payroll Dashboard</title>
-  <link rel="stylesheet" href="/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Payroll System – Dashboard</title>
+  <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo-icon">👤</div>
+    <h1>Employee Payroll</h1>
+  </nav>
+
   <div class="container">
-    <header>
-      <h1>💼 Employee Payroll System</h1>
-      <p>Manage employee records and calculate monthly payroll</p>
-    </header>
 
-    <nav>
-      <a href="/" class="home">🏠 Dashboard</a>
-      <a href="/add">➕ Add New Employee</a>
-    </nav>
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2>Employee Details</h2>
+      <div class="header-actions">
+        <div class="search-icon">🔍</div>
+        <a href="/add" class="btn-add">+ Add User</a>
+      </div>
+    </div>
 
-    <main>
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-label">Total Employees</div>
+        <div class="stat-value"><%= totalEmployees %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🏛️</div>
+        <div class="stat-label">Departments</div>
+        <div class="stat-value"><%= departments %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💰</div>
+        <div class="stat-label">Total Basic Salary</div>
+        <div class="stat-value">₹<%= totalBasic.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📋</div>
+        <div class="stat-label">Total Tax (12%)</div>
+        <div class="stat-value">₹<%= totalTax.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💵</div>
+        <div class="stat-label">Total Net Salary</div>
+        <div class="stat-value">₹<%= totalNet.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📈</div>
+        <div class="stat-label">Average Salary</div>
+        <div class="stat-value">₹<%= avgSalary.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></div>
+      </div>
+    </div>
+
+    <!-- Employee Table -->
+    <div class="table-card">
       <% if (employees.length === 0) { %>
         <div class="empty-state">
-          <h2>No Employees Found</h2>
-          <p>Get started by adding your first employee to the system.</p>
-          <a href="/add" class="btn btn-edit" style="display: inline-block; padding: 1rem 2rem; font-size: 1rem;">Add Employee</a>
+          <div class="empty-icon">📭</div>
+          <p>No employees found. <a href="/add">Add one now!</a></p>
         </div>
       <% } else { %>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Employee Name</th>
-                <th>Department</th>
-                <th>Basic Salary</th>
-                <th>Tax (12%)</th>
-                <th>Net Salary</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% employees.forEach(employee => { 
-                const basicSalary = employee.basicSalary;
-                const tax = basicSalary * 0.12;
-                const netSalary = basicSalary - tax;
-                
-                // Determine badge class based on department
-                let badgeClass = 'badge';
-                const dept = employee.department.toLowerCase();
-                if (dept.includes('engineering') || dept.includes('tech') || dept.includes('it')) {
-                  badgeClass += ' badge-engineering';
-                } else if (dept.includes('marketing')) {
-                  badgeClass += ' badge-marketing';
-                } else if (dept.includes('hr') || dept.includes('human')) {
-                  badgeClass += ' badge-hr';
-                } else if (dept.includes('sales')) {
-                  badgeClass += ' badge-sales';
-                } else if (dept.includes('finance')) {
-                  badgeClass += ' badge-finance';
-                }
-              %>
-                <tr>
-                  <td><%= employee.name %></td>
-                  <td><span class="<%= badgeClass %>"><%= employee.department %></span></td>
-                  <td class="currency">$<%= basicSalary.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
-                  <td class="currency tax">$<%= tax.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
-                  <td class="currency">$<%= netSalary.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
-                  <td class="actions">
-                    <a href="/edit/<%= employee.id %>" class="btn btn-edit">✏️ Edit</a>
-                    <a href="/delete/<%= employee.id %>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete <%= employee.name %>?')">🗑️ Delete</a>
-                  </td>
-                </tr>
-              <% }); %>
-            </tbody>
-          </table>
-        </div>
-
-        <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 8px; border-left: 4px solid #3498db;">
-          <h3 style="margin-bottom: 0.75rem; color: #2c3e50;">📊 Summary</h3>
-          <p style="color: #7f8c8d; font-size: 1rem;">
-            <strong>Total Employees:</strong> <%= employees.length %> | 
-            <strong>Total Monthly Payroll:</strong> $<%= employees.reduce((sum, emp) => sum + (emp.basicSalary - (emp.basicSalary * 0.12)), 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-          </p>
-        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Gender</th>
+              <th>Department</th>
+              <th>Salary</th>
+              <th>Tax (12%)</th>
+              <th>Net Salary</th>
+              <th>Start Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% employees.forEach(emp => {
+                 const tax = emp.salary * 0.12;
+                 const net = emp.salary - tax;
+                 const formattedDate = new Date(emp.startDate).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
+            %>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="avatar <%= emp.gender === 'Female' ? 'female' : 'male' %>">
+                    <%= emp.gender === 'Female' ? '👩' : '👨' %>
+                  </div>
+                  <%= emp.name %>
+                </div>
+              </td>
+              <td><%= emp.gender %></td>
+              <td><span class="badge"><%= emp.department %></span></td>
+              <td>₹<%= Number(emp.salary).toLocaleString('en-IN', {minimumFractionDigits: 2}) %></td>
+              <td>₹<%= tax.toLocaleString('en-IN', {minimumFractionDigits: 2}) %></td>
+              <td>₹<%= net.toLocaleString('en-IN', {minimumFractionDigits: 2}) %></td>
+              <td><%= formattedDate %></td>
+              <td>
+                <div class="actions">
+                  <a href="/edit/<%= emp.id %>" class="btn-edit" title="Edit">✏️</a>
+                  <a href="/delete/<%= emp.id %>" class="btn-delete" title="Delete"
+                     onclick="return confirm('Delete <%= emp.name %>?')">🗑️</a>
+                </div>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
       <% } %>
-    </main>
+    </div>
 
-    <footer>
-      <p>&copy; 2024 Employee Payroll System | Built with Node.js, Express & EJS</p>
-    </footer>
   </div>
 </body>
 </html>

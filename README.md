@@ -1,215 +1,195 @@
-# Employee Payroll System (EPS)
+# 🧾 Employee Payroll System (EPS)
 
-A server-side web application to manage employee records and calculate monthly payroll using Node.js, Express, and EJS.
+A server-side web application to manage employee records and calculate monthly payroll — built with **Node.js**, **Express**, and **EJS**.
 
-## 🎯 Features
+---
 
-- **Dashboard**: View all employees with real-time payroll calculations
-- **Payroll Calculation**: Automatic calculation of:
-  - Tax (12% of basic salary)
-  - Net Salary (Basic Salary - Tax)
-- **CRUD Operations**:
-  - ➕ Add new employees
-  - ✏️ Edit existing employees
-  - 🗑️ Delete employees
-- **Data Persistence**: All data stored in `employees.json`
-- **Professional UI**: Modern, responsive design with smooth animations
-- **Form Validation**: Client-side and server-side validation
-- **Real-time Preview**: Salary breakdown preview while entering data
+## 📸 Preview
 
-## 📁 Project Structure
+> Dashboard showing employee details, payroll stats, and CRUD actions.
+
+| Feature | Description |
+|---|---|
+| Dashboard | Live stats + employee table |
+| Add Employee | Registration form with validation |
+| Edit Employee | Pre-filled update form |
+| Delete Employee | One-click removal with confirmation |
+| Payroll Calc | Auto tax (12%) and net salary per row |
+
+---
+
+## 🗂️ Project Structure
 
 ```
 payroll-app/
 ├── modules/
-│   └── fileHandler.js      # Custom module for file operations
+│   └── fileHandler.js     # Custom module for fs.promises read/write
 ├── public/
-│   └── style.css           # Professional styling
+│   └── style.css          # Teal-themed UI styles
 ├── views/
-│   ├── index.ejs          # Dashboard (Employee Table)
-│   ├── add.ejs            # Add Employee Form
-│   └── edit.ejs           # Edit Employee Form
-├── employees.json         # JSON database
-├── server.js              # Main entry point
-├── package.json           # Dependencies
-└── README.md              # This file
+│   ├── index.ejs          # Dashboard (stats + employee table)
+│   ├── add.ejs            # Add new employee form
+│   └── edit.ejs           # Edit existing employee form
+├── employees.json         # JSON file database
+├── server.js              # Main Express entry point
+├── package.json
+└── README.md
 ```
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js (v14 or higher)
-- npm (comes with Node.js)
-
-### Installation
-
-1. **Extract the project files** to a directory of your choice
-
-2. **Navigate to the project directory**:
-   ```bash
-   cd payroll-app
-   ```
-
-3. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-### Running the Application
-
-**Start the server**:
-```bash
-npm start
-```
-
-**For development (with auto-restart)**:
-```bash
-npm run dev
-```
-
-The application will be available at:
-- **Dashboard**: http://localhost:3000
-- **Add Employee**: http://localhost:3000/add
-
-## 📝 Usage Guide
-
-### 1. View Dashboard
-- Access the main dashboard at http://localhost:3000
-- View all employees with their salary calculations
-- See summary statistics at the bottom
-
-### 2. Add New Employee
-- Click "➕ Add New Employee" button
-- Fill in the form:
-  - **Name**: Employee's full name (required)
-  - **Department**: Select from dropdown (required)
-  - **Basic Salary**: Monthly salary in USD (required, must be > 0)
-- Real-time salary preview shows tax and net salary
-- Click "Add Employee" to save
-
-### 3. Edit Employee
-- Click "✏️ Edit" button next to any employee
-- Modify the employee details
-- View current salary breakdown
-- Real-time preview of new salary calculations
-- Click "Update Employee" to save changes
-
-### 4. Delete Employee
-- Click "🗑️ Delete" button next to any employee
-- Confirm the deletion in the popup dialog
-- Employee will be removed from the system
-
-## 💰 Salary Calculations
-
-The system automatically calculates:
-
-```
-Tax = Basic Salary × 0.12 (12%)
-Net Salary = Basic Salary - Tax
-```
-
-**Example**:
-- Basic Salary: $75,000
-- Tax (12%): $9,000
-- Net Salary: $66,000
-
-## 🎨 Design Features
-
-- **Modern UI**: Gradient backgrounds with smooth animations
-- **Responsive Design**: Works on desktop, tablet, and mobile
-- **Professional Typography**: Clean, readable fonts
-- **Color-Coded Departments**: Visual badges for each department
-- **Interactive Elements**: Hover effects and smooth transitions
-- **Form Validation**: Real-time feedback and error prevention
-
-## 🔧 Technical Details
-
-### Data Validation
-
-**Server-side**:
-- Name: Cannot be empty
-- Salary: Must be a positive number
-- Department: Must be selected
-- All fields are required
-
-**Client-side**:
-- Real-time form validation
-- Confirmation dialogs for deletions
-- Input format checking
-
-### File Operations
-
-The `fileHandler.js` module provides:
-- `read()`: Read all employees
-- `write(data)`: Write employee data
-- `findById(id)`: Find specific employee
-- `addEmployee(employee)`: Add new employee
-- `updateEmployee(id, data)`: Update employee
-- `deleteEmployee(id)`: Delete employee
-
-All operations use async/await with proper error handling.
-
-### Unique IDs
-
-Each employee is assigned a unique ID using `Date.now()`, ensuring no conflicts.
-
-## 🛠️ Development
-
-### Project Requirements Met
-
-✅ Dashboard with employee table  
-✅ Dynamic payroll calculations (Tax: 12%, Net Salary)  
-✅ Registration form for new employees  
-✅ Data persistence in employees.json  
-✅ Custom module architecture (fileHandler.js)  
-✅ Unique IDs for employees  
-✅ Data validation (client & server)  
-✅ Redirects after CRUD operations  
-✅ Static files served from public folder  
-✅ Edit and Delete functionality  
-
-### Technologies Used
-
-- **Backend**: Node.js, Express.js
-- **Templating**: EJS (Embedded JavaScript)
-- **Storage**: JSON file-based database
-- **Frontend**: HTML5, CSS3, Vanilla JavaScript
-- **Architecture**: MVC pattern with custom modules
-
-## 📊 Sample Data
-
-The system comes with 3 sample employees:
-1. Sarah Johnson (Engineering) - $75,000
-2. Michael Chen (Marketing) - $62,000
-3. Emily Rodriguez (Human Resources) - $58,000
-
-You can add, edit, or delete these as needed.
-
-## 🐛 Troubleshooting
-
-**Port already in use**:
-```bash
-# Use a different port
-PORT=3001 npm start
-```
-
-**employees.json not found**:
-- The system will automatically create the file on first run
-- Or create it manually with: `[]`
-
-**Server won't start**:
-- Ensure all dependencies are installed: `npm install`
-- Check Node.js version: `node --version` (should be v14+)
-
-## 📄 License
-
-This project is created for educational purposes.
-
-## 👨‍💻 Author
-
-Built with ❤️ using Node.js, Express, and EJS
 
 ---
 
-**Happy Coding! 🚀**
+## ⚙️ Tech Stack
+
+- **Runtime:** Node.js
+- **Framework:** Express.js
+- **Templating:** EJS (Embedded JavaScript)
+- **Database:** JSON file (`employees.json`)
+- **Styling:** Plain CSS (served as static files)
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone / Extract the project
+
+```bash
+unzip payroll-app.zip
+cd payroll-app
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Start the server
+
+```bash
+node server.js
+```
+
+### 4. Open in browser
+
+```
+http://localhost:3000
+```
+
+---
+
+## 🔌 Routes
+
+| Method | Route | Description |
+|---|---|---|
+| GET | `/` | Dashboard — list all employees |
+| GET | `/add` | Show Add Employee form |
+| POST | `/add` | Submit new employee |
+| GET | `/edit/:id` | Show Edit Employee form |
+| POST | `/edit/:id` | Submit updated employee |
+| GET | `/delete/:id` | Delete employee by ID |
+
+---
+
+## 💰 Payroll Calculation Logic
+
+All calculations happen dynamically in `index.ejs`:
+
+```
+Tax       = Basic Salary × 0.12   (12%)
+Net Salary = Basic Salary − Tax
+```
+
+Dashboard summary cards aggregate across all employees:
+
+```
+Total Basic  = Σ all salaries
+Total Tax    = Total Basic × 0.12
+Total Net    = Total Basic − Total Tax
+Avg Salary   = Total Basic ÷ Total Employees
+```
+
+---
+
+## 🗃️ Data Model
+
+Each employee stored in `employees.json` follows this shape:
+
+```json
+{
+  "id": 1713830400000,
+  "name": "Ravi Sharma",
+  "gender": "Male",
+  "department": "Engineering",
+  "salary": 55000,
+  "startDate": "2022-03-15"
+}
+```
+
+> **IDs** are generated using `Date.now()` to ensure uniqueness.
+
+---
+
+## ✅ Validation Rules
+
+- Name cannot be empty or whitespace
+- Salary must be a non-negative number
+- Department cannot be empty
+- On failure, the form re-renders with an inline error message
+
+---
+
+## 📦 Dependencies
+
+| Package | Version | Purpose |
+|---|---|---|
+| `express` | ^4.18.2 | Web server & routing |
+| `ejs` | ^3.1.9 | Server-side HTML templating |
+
+Install with:
+
+```bash
+npm install
+```
+
+---
+
+## 🧩 Custom Module — `fileHandler.js`
+
+Located at `modules/fileHandler.js`, this module wraps all file I/O using `fs.promises`:
+
+```js
+const { read, write } = require('./modules/fileHandler');
+
+// Read all employees
+const employees = await read();
+
+// Save updated list
+await write(employees);
+```
+
+Both functions use `try/catch` to prevent server crashes on file errors.
+
+---
+
+## 🎨 UI Highlights
+
+- Teal navbar with branding
+- 6 summary stat cards at the top
+- Dark-header responsive table
+- Gender-based colour-coded avatars
+- Department badge chips
+- Edit ✏️ and Delete 🗑️ action buttons per row
+- Clean form pages with error alerts
+
+---
+
+## 👨‍💻 Author
+
+Built as a project submission for **GLA University, Mathura**
+Subject: Server-Side Web Development | Node.js & Express
+
+---
+
+## 📄 License
+
+This project is for educational purposes only.

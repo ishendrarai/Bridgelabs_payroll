@@ -1,142 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit Employee</title>
-  <link rel="stylesheet" href="/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Payroll System – Edit Employee</title>
+  <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
+
+  <nav class="navbar">
+    <div class="logo-icon">👤</div>
+    <h1>Employee Payroll</h1>
+  </nav>
+
   <div class="container">
-    <header>
-      <h1>✏️ Edit Employee</h1>
-      <p>Update employee information</p>
-    </header>
+    <div class="form-card">
+      <h2>✏️ Edit Employee</h2>
 
-    <nav>
-      <a href="/" class="home">🏠 Back to Dashboard</a>
-    </nav>
-
-    <main>
-      <% if (employee) { %>
-        <div class="form-container">
-          <form action="/edit/<%= employee.id %>" method="POST" onsubmit="return validateForm()">
-            <div class="form-group">
-              <label for="name">Employee Name *</label>
-              <input 
-                type="text" 
-                id="name" 
-                name="name" 
-                value="<%= employee.name %>"
-                placeholder="Enter full name" 
-                required
-                minlength="2"
-              >
-            </div>
-
-            <div class="form-group">
-              <label for="department">Department *</label>
-              <select id="department" name="department" required>
-                <option value="">-- Select Department --</option>
-                <option value="Engineering" <%= employee.department === 'Engineering' ? 'selected' : '' %>>Engineering</option>
-                <option value="Marketing" <%= employee.department === 'Marketing' ? 'selected' : '' %>>Marketing</option>
-                <option value="Sales" <%= employee.department === 'Sales' ? 'selected' : '' %>>Sales</option>
-                <option value="Human Resources" <%= employee.department === 'Human Resources' ? 'selected' : '' %>>Human Resources</option>
-                <option value="Finance" <%= employee.department === 'Finance' ? 'selected' : '' %>>Finance</option>
-                <option value="Operations" <%= employee.department === 'Operations' ? 'selected' : '' %>>Operations</option>
-                <option value="Customer Service" <%= employee.department === 'Customer Service' ? 'selected' : '' %>>Customer Service</option>
-                <option value="IT" <%= employee.department === 'IT' ? 'selected' : '' %>>Information Technology</option>
-                <option value="Legal" <%= employee.department === 'Legal' ? 'selected' : '' %>>Legal</option>
-                <option value="Administration" <%= employee.department === 'Administration' ? 'selected' : '' %>>Administration</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="basicSalary">Basic Salary (Monthly) *</label>
-              <input 
-                type="number" 
-                id="basicSalary" 
-                name="basicSalary" 
-                value="<%= employee.basicSalary %>"
-                placeholder="Enter monthly salary" 
-                required
-                min="1"
-                step="0.01"
-              >
-              <small style="color: #7f8c8d; font-size: 0.875rem; margin-top: 0.5rem; display: block;">
-                💡 Tax (12%) and net salary will be calculated automatically
-              </small>
-            </div>
-
-            <div style="background: #fff3cd; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; border-left: 4px solid #f39c12;">
-              <strong style="color: #856404;">Current Salary Breakdown:</strong><br>
-              <span style="color: #2c3e50;">Basic Salary: $<%= employee.basicSalary.toLocaleString('en-US', {minimumFractionDigits: 2}) %></span><br>
-              <span style="color: #f39c12;">Tax (12%): $<%= (employee.basicSalary * 0.12).toLocaleString('en-US', {minimumFractionDigits: 2}) %></span><br>
-              <span style="color: #27ae60; font-weight: 600;">Net Salary: $<%= (employee.basicSalary - (employee.basicSalary * 0.12)).toLocaleString('en-US', {minimumFractionDigits: 2}) %></span>
-            </div>
-
-            <button type="submit" class="btn-submit">Update Employee</button>
-          </form>
-        </div>
-      <% } else { %>
-        <div class="alert alert-error">
-          <strong>Error:</strong> Employee not found. <a href="/" style="color: #c0392b; text-decoration: underline;">Return to dashboard</a>
-        </div>
+      <% if (error) { %>
+        <div class="alert-error">⚠️ <%= error %></div>
       <% } %>
-    </main>
 
-    <footer>
-      <p>&copy; 2024 Employee Payroll System | Built with Node.js, Express & EJS</p>
-    </footer>
+      <form action="/edit/<%= employee.id %>" method="POST">
+
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" value="<%= employee.name %>" required />
+        </div>
+
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <select id="gender" name="gender" required>
+            <option value="Male"   <%= employee.gender === 'Male'   ? 'selected' : '' %>>Male</option>
+            <option value="Female" <%= employee.gender === 'Female' ? 'selected' : '' %>>Female</option>
+            <option value="Other"  <%= employee.gender === 'Other'  ? 'selected' : '' %>>Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="department">Department</label>
+          <input type="text" id="department" name="department" value="<%= employee.department %>" required />
+        </div>
+
+        <div class="form-group">
+          <label for="salary">Basic Salary (₹)</label>
+          <input type="number" id="salary" name="salary" value="<%= employee.salary %>" min="0" step="0.01" required />
+        </div>
+
+        <div class="form-group">
+          <label for="startDate">Start Date</label>
+          <input type="date" id="startDate" name="startDate" value="<%= employee.startDate %>" required />
+        </div>
+
+        <div class="form-actions">
+          <a href="/" class="btn-cancel">Cancel</a>
+          <button type="submit" class="btn-submit">Save Changes</button>
+        </div>
+
+      </form>
+    </div>
   </div>
-
-  <script>
-    function validateForm() {
-      const name = document.getElementById('name').value.trim();
-      const department = document.getElementById('department').value;
-      const salary = parseFloat(document.getElementById('basicSalary').value);
-
-      if (name === '') {
-        alert('Please enter employee name');
-        return false;
-      }
-
-      if (department === '') {
-        alert('Please select a department');
-        return false;
-      }
-
-      if (isNaN(salary) || salary <= 0) {
-        alert('Please enter a valid salary greater than 0');
-        return false;
-      }
-
-      return true;
-    }
-
-    // Show updated salary preview
-    document.getElementById('basicSalary').addEventListener('input', function(e) {
-      const salary = parseFloat(e.target.value);
-      if (!isNaN(salary) && salary > 0) {
-        const tax = salary * 0.12;
-        const netSalary = salary - tax;
-        
-        let preview = document.getElementById('salary-preview');
-        if (!preview) {
-          preview = document.createElement('div');
-          preview.id = 'salary-preview';
-          preview.style.cssText = 'margin-top: 1rem; padding: 1rem; background: #d5f4e6; border-radius: 6px; font-size: 0.9rem;';
-          e.target.parentElement.appendChild(preview);
-        }
-        
-        preview.innerHTML = `
-          <strong style="color: #27ae60;">💰 New Salary Breakdown:</strong><br>
-          <span style="color: #2c3e50;">Basic Salary: $${salary.toLocaleString('en-US', {minimumFractionDigits: 2})}</span><br>
-          <span style="color: #f39c12;">Tax (12%): $${tax.toLocaleString('en-US', {minimumFractionDigits: 2})}</span><br>
-          <span style="color: #27ae60; font-weight: 600;">Net Salary: $${netSalary.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
-        `;
-      }
-    });
-  </script>
 </body>
 </html>
