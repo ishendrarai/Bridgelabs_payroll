@@ -1,120 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Employee Payroll System – Dashboard</title>
-  <link rel="stylesheet" href="/style.css" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>EPS — Dashboard</title>
+  <link rel="stylesheet" href="/style.css"/>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="logo-icon">👤</div>
-    <h1>Employee Payroll</h1>
+<!-- Ambient blobs -->
+<div class="blob-1"></div>
+<div class="blob-2"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">💼</div>
+    <div class="brand-text">
+      <span class="brand-name">Payroll</span>
+      <span class="brand-sub">EPS v1.0</span>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <span class="nav-label">Menu</span>
+    <a href="/" class="nav-item active">
+      <span class="nav-icon">⬛</span> Dashboard
+    </a>
+    <a href="/add" class="nav-item">
+      <span class="nav-icon">＋</span> Add Employee
+    </a>
+    <span class="nav-label" style="margin-top:8px">Info</span>
+    <div class="nav-item" style="cursor:default">
+      <span class="nav-icon">👥</span>
+      <span><%= totalEmployees %> Employees</span>
+    </div>
+    <div class="nav-item" style="cursor:default">
+      <span class="nav-icon">🏛️</span>
+      <span><%= departments %> Departments</span>
+    </div>
   </nav>
-
-  <div class="container">
-
-    <!-- Page Header -->
-    <div class="page-header">
-      <h2>Employee Details</h2>
-      <div class="header-actions">
-        <div class="search-icon">🔍</div>
-        <a href="/add" class="btn-add">+ Add User</a>
-      </div>
+  <div class="sidebar-footer">
+    <div class="sidebar-badge">
+      <strong>GLA University</strong>
+      Node.js · Express · EJS
     </div>
+  </div>
+</aside>
 
-    <!-- Stats Cards -->
+<!-- Main -->
+<div class="main">
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1>Employee Details</h1>
+      <p>Manage payroll records and calculations</p>
+    </div>
+    <div class="topbar-right">
+      <!-- Search -->
+      <div class="search-wrap" id="searchWrap">
+        <div class="search-icon-btn" id="searchToggle">🔍</div>
+        <input
+          type="text" id="searchInput" class="search-input"
+          placeholder="Search name, dept, gender…" autocomplete="off"/>
+      </div>
+      <a href="/export" class="btn-export" title="Export to Excel">📊 Export Excel</a>
+        <a href="/add" class="btn-add">＋ Add Employee</a>
+    </div>
+  </header>
+
+  <div class="content">
+    <!-- Stats -->
     <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon">👥</div>
-        <div class="stat-label">Total Employees</div>
-        <div class="stat-value"><%= totalEmployees %></div>
+      <div class="stat-card color-indigo">
+        <div class="stat-top">
+          <span class="stat-label">Total Employees</span>
+          <div class="stat-emoji">👥</div>
+        </div>
+        <div class="stat-value large" id="statTotal"><%= totalEmployees %></div>
+        <p class="stat-sub">across <%= departments %> dept<%= departments !== 1 ? 's' : '' %></p>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon">🏛️</div>
-        <div class="stat-label">Departments</div>
-        <div class="stat-value"><%= departments %></div>
+
+      <div class="stat-card color-amber">
+        <div class="stat-top">
+          <span class="stat-label">Total Basic Salary</span>
+          <div class="stat-emoji">💰</div>
+        </div>
+        <div class="stat-value mono">₹<%= totalBasic.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}) %></div>
+        <p class="stat-sub">gross before tax</p>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon">💰</div>
-        <div class="stat-label">Total Basic Salary</div>
-        <div class="stat-value">₹<%= totalBasic.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></div>
+
+      <div class="stat-card color-rose">
+        <div class="stat-top">
+          <span class="stat-label">Total Tax (12%)</span>
+          <div class="stat-emoji">📋</div>
+        </div>
+        <div class="stat-value mono">₹<%= totalTax.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}) %></div>
+        <p class="stat-sub"><span class="down">12%</span> deduction</p>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon">📋</div>
-        <div class="stat-label">Total Tax (12%)</div>
-        <div class="stat-value">₹<%= totalTax.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></div>
+
+      <div class="stat-card color-emerald">
+        <div class="stat-top">
+          <span class="stat-label">Total Net Salary</span>
+          <div class="stat-emoji">💵</div>
+        </div>
+        <div class="stat-value mono">₹<%= totalNet.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}) %></div>
+        <p class="stat-sub"><span class="up">after deductions</span></p>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon">💵</div>
-        <div class="stat-label">Total Net Salary</div>
-        <div class="stat-value">₹<%= totalNet.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></div>
+
+      <div class="stat-card color-sky">
+        <div class="stat-top">
+          <span class="stat-label">Average Salary</span>
+          <div class="stat-emoji">📈</div>
+        </div>
+        <div class="stat-value mono">₹<%= avgSalary.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2}) %></div>
+        <p class="stat-sub">per employee</p>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon">📈</div>
-        <div class="stat-label">Average Salary</div>
-        <div class="stat-value">₹<%= avgSalary.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></div>
+
+      <div class="stat-card color-violet">
+        <div class="stat-top">
+          <span class="stat-label">Departments</span>
+          <div class="stat-emoji">🏛️</div>
+        </div>
+        <div class="stat-value large"><%= departments %></div>
+        <p class="stat-sub">active units</p>
       </div>
     </div>
 
-    <!-- Employee Table -->
-    <div class="table-card">
-      <% if (employees.length === 0) { %>
-        <div class="empty-state">
-          <div class="empty-icon">📭</div>
-          <p>No employees found. <a href="/add">Add one now!</a></p>
-        </div>
-      <% } else { %>
+    <!-- Table -->
+    <div class="table-section">
+      <div class="table-header">
+        <span class="table-title">Employee Records</span>
+        <span class="table-count" id="tableCount"><%= totalEmployees %> total</span>
+      </div>
+      <div class="table-card">
+        <% if (employees.length === 0) { %>
+          <div class="empty-state">
+            <span class="empty-icon">📭</span>
+            <p>No employees yet. <a href="/add">Add your first one</a></p>
+          </div>
+        <% } else { %>
         <table>
           <thead>
             <tr>
-              <th>Name</th>
+              <th>Employee</th>
               <th>Gender</th>
               <th>Department</th>
-              <th>Salary</th>
-              <th>Tax (12%)</th>
+              <th>Basic Salary</th>
+              <th>Tax 12%</th>
               <th>Net Salary</th>
               <th>Start Date</th>
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="employeeTable">
             <% employees.forEach(emp => {
                  const tax = emp.salary * 0.12;
                  const net = emp.salary - tax;
-                 const formattedDate = new Date(emp.startDate).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
+                 const d = new Date(emp.startDate);
+                 const formattedDate = d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
             %>
-            <tr>
+            <tr class="emp-row"
+              data-name="<%= emp.name.toLowerCase() %>"
+              data-gender="<%= emp.gender.toLowerCase() %>"
+              data-dept="<%= emp.department.toLowerCase() %>"
+              data-date="<%= formattedDate.toLowerCase() %>">
               <td>
                 <div class="user-cell">
-                  <div class="avatar <%= emp.gender === 'Female' ? 'female' : 'male' %>">
-                    <%= emp.gender === 'Female' ? '👩' : '👨' %>
+                  <div class="avatar <%= emp.gender==='Female'?'female':'male' %>">
+                    <%= emp.gender==='Female'?'👩':'👨' %>
                   </div>
-                  <%= emp.name %>
+                  <span class="user-name"><%= emp.name %></span>
                 </div>
               </td>
-              <td><%= emp.gender %></td>
+              <td><span class="gender-badge"><%= emp.gender %></span></td>
               <td><span class="badge"><%= emp.department %></span></td>
-              <td>₹<%= Number(emp.salary).toLocaleString('en-IN', {minimumFractionDigits: 2}) %></td>
-              <td>₹<%= tax.toLocaleString('en-IN', {minimumFractionDigits: 2}) %></td>
-              <td>₹<%= net.toLocaleString('en-IN', {minimumFractionDigits: 2}) %></td>
-              <td><%= formattedDate %></td>
+              <td><span class="mono salary-val">₹<%= Number(emp.salary).toLocaleString('en-IN',{minimumFractionDigits:2}) %></span></td>
+              <td><span class="mono tax-val">₹<%= tax.toLocaleString('en-IN',{minimumFractionDigits:2}) %></span></td>
+              <td><span class="mono net-val">₹<%= net.toLocaleString('en-IN',{minimumFractionDigits:2}) %></span></td>
+              <td style="color:var(--text3);font-size:12px"><%= formattedDate %></td>
               <td>
                 <div class="actions">
                   <a href="/edit/<%= emp.id %>" class="btn-edit" title="Edit">✏️</a>
                   <a href="/delete/<%= emp.id %>" class="btn-delete" title="Delete"
-                     onclick="return confirm('Delete <%= emp.name %>?')">🗑️</a>
+                     onclick="return confirm('Remove <%= emp.name %>?')">🗑️</a>
                 </div>
               </td>
             </tr>
             <% }) %>
+            <tr id="noResults" style="display:none">
+              <td colspan="8" style="text-align:center;padding:40px;color:var(--text3)">
+                No employees match your search.
+              </td>
+            </tr>
           </tbody>
         </table>
-      <% } %>
+        <% } %>
+      </div>
     </div>
+  </div><!-- /content -->
+</div><!-- /main -->
 
-  </div>
+<script>
+  const searchToggle = document.getElementById('searchToggle');
+  const searchWrap   = document.getElementById('searchWrap');
+  const searchInput  = document.getElementById('searchInput');
+  const rows         = document.querySelectorAll('.emp-row');
+  const noResults    = document.getElementById('noResults');
+  const statTotal    = document.getElementById('statTotal');
+  const tableCount   = document.getElementById('tableCount');
+  const TOTAL = <%= totalEmployees %>;
+
+  searchToggle.addEventListener('click', () => {
+    searchWrap.classList.toggle('open');
+    if (searchWrap.classList.contains('open')) searchInput.focus();
+    else { searchInput.value=''; filterTable(''); }
+  });
+  searchInput.addEventListener('keydown', e => {
+    if (e.key==='Escape') { searchWrap.classList.remove('open'); searchInput.value=''; filterTable(''); }
+  });
+  searchInput.addEventListener('input', () => filterTable(searchInput.value));
+
+  function filterTable(q) {
+    q = q.trim().toLowerCase();
+    let visible = 0;
+    rows.forEach(r => {
+      const hay = [r.dataset.name, r.dataset.gender, r.dataset.dept, r.dataset.date].join(' ');
+      const show = !q || hay.includes(q);
+      r.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    if (noResults) noResults.style.display = (visible===0 && q) ? '' : 'none';
+    if (statTotal) statTotal.textContent = q ? visible : TOTAL;
+    if (tableCount) tableCount.textContent = (q ? visible : TOTAL) + ' total';
+  }
+</script>
 </body>
 </html>
